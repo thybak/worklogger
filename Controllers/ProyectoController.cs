@@ -25,6 +25,15 @@ namespace WorkLogger.Controllers
             return new ObjectResult(proyecto);
         }
 
+        [HttpGet("usuario/{usuarioId}")]
+        public IActionResult ObtenerPorUsuarioId(long usuarioId){
+            var proyectos = _contexto.Proyecto.Where(p => p.UsuarioId == usuarioId);
+            if (proyectos == null || proyectos.Count() == 0){
+                return NotFound();
+            }
+            return new ObjectResult(proyectos);
+        }
+
         [HttpPost]
         public IActionResult Crear([FromBody] Proyecto proyecto)
         {

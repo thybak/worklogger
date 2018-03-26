@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RegistroHora, NOMBRE_ENTIDAD_REGISTRO_HORA } from '../../modelos/registro-hora';
 import { API } from '../../utiles/api.service';
+import {IMyDpOptions, IMyDateModel} from 'mydatepicker';
 import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
 
 @Component({
@@ -11,36 +12,31 @@ import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
 })
 export class IndiceRegistroHoraComponent implements OnInit {
   dia: Date;
+  proyectoId: number;
   proyecto: Proyecto;
   registrosHora: RegistroHora[];
+  proyectosUsuario: Proyecto[];
   horas: number;
+  opcionesFecha: IMyDpOptions;
 
   constructor(private api: API) {
     this.dia = new Date();
     this.registrosHora = [];
+    this.proyectosUsuario = [];
+    this.opcionesFecha = {
+      dateFormat: 'dd.mm.yyyy',
+    };
   }
 
   ngOnInit() {
-    this.api.getPorId(NOMBRE_ENTIDAD_PROYECTO, '2').subscribe(
+    this.api.getPorParametros(NOMBRE_ENTIDAD_PROYECTO, ['usuario', '7']).subscribe(
       respuesta => {
-        this.proyecto = respuesta as Proyecto;
+        this.proyectosUsuario = respuesta as Proyecto[];
       },
       error => {
         console.log("Error", error);
       }
-    )
-    this.api.getPorParametros(NOMBRE_ENTIDAD_REGISTRO_HORA, ['2', this.dia.toISOString()]).subscribe(
-      respuesta => {
-        this.registrosHora = respuesta as RegistroHora[];
-        for(let registroHora of this.registrosHora){
-          registroHora.fechaHora = new Date(registroHora.fechaHora);
-        }
-        this.calcularHoras();
-      },
-      error => {
-        console.log("Error", error);
-      }
-    )
+    );
   }
 
   calcularHoras(){
@@ -51,7 +47,6 @@ export class IndiceRegistroHoraComponent implements OnInit {
     if (limiteSuperior % 2 !== 0){
       limiteSuperior--;
     }
-    console.log(limiteSuperior);
     let calculoHoras: number = 0;
     for(let idx = 0; idx < limiteSuperior; idx+=2){
       calculoHoras += (this.registrosHora[idx+1].fechaHora.getTime() - this.registrosHora[idx].fechaHora.getTime());
@@ -60,4 +55,44 @@ export class IndiceRegistroHoraComponent implements OnInit {
     this.horas = calculoHoras;
   }
 
+  seleccionarProyecto(){
+    this.api.getPorId(NOMBRE_ENTIDAD_PROYECTO, this.proyectoId.toString()).subscribe(
+      respuesta => {
+        this.proyecto = respuesta as Proyecto;
+        this.api.getPorParametros(NOMBRE_ENTIDAD_REGISTRO_HORA, [this.proyectoId.toString(), this.dia.toISOString()]).subscribe(
+          respuesta => {
+            this.registrosHora = respuesta as RegistroHora[];
+            for(let registroHora of this.registrosHora){
+              registroHora.fechaHora = new Date(registroHora.fechaHora);
+            }
+            this.calcularHoras();
+          },
+          error => {
+            console.log("Error", error);
+          });
+      });
+  }
+
+  altaRapida(){
+    let registroHora : RegistroHora = new RegistroHora();
+    registroHora.proyectoId = this.proyecto.id;
+    this.api.post(NOMBRE_ENTIDAD_REGISTRO_HORA, registroHora).subscribe(
+      respuesta => {
+        registroHora.id = respuesta.id;
+        registroHora.fechaHora = respuesta.fechaHora;
+        this.registrosHora.push(registroHora);
+        this.calcularHoras();
+      });
+  }
+
+  eliminarRegistro(id: number){
+    this.api.deletePorId(NOMBRE_ENTIDAD_REGISTRO_HORA, id.toString()).subscribe(
+      () => {
+        this.registrosHora.splice(this.registrosHora.findIndex(r => r.id == id), 1);
+      });
+  }
+
+  onFechaCambiada(evento: IMyDateModel) {
+    this.dia = evento.jsdate;
+  }
 }

@@ -80,7 +80,7 @@ export class API {
      * @param id 
      */
     deletePorId(entidad: string, id: string): Observable<any> {
-        return this.http.delete(API.URL + entidad + "/" + id, this.crearCabeceraAutenticacion()).map(respuesta => JSON.parse(respuesta.text()));
+        return this.http.delete(API.URL + entidad + "/" + id, this.crearCabeceraAutenticacion()).map(respuesta => respuesta);
     }
     /**
      * Utiliza el método HTTP POST para comunicarse con el API e insertar registros

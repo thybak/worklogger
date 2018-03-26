@@ -1,4 +1,4 @@
-export interface Proyecto {
+export class Proyecto {
     id: number;
     nombre: string;
     tipo: number;

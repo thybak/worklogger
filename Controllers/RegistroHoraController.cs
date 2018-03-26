@@ -44,6 +44,10 @@ namespace WorkLogger.Controllers
                 return BadRequest();
             }
 
+            if (registro.FechaHora == null || registro.FechaHora == DateTime.MinValue) {
+                registro.FechaHora = DateTime.Now;
+            }
+
             _contexto.Registro.Add(registro);
             _contexto.SaveChanges();
 

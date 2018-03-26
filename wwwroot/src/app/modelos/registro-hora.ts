@@ -1,7 +1,6 @@
-export interface RegistroHora {
+export class RegistroHora {
     id: number;
     fechaHora: Date;
-    tipo: number;
     proyectoId: number;
 }
 
