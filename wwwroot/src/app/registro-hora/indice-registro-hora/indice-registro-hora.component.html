@@ -1,22 +1,17 @@
 <div class="row">
-  <div class="col-md-12">
-    <div class="alert alert-info">Hoy es
-      <p><b>{{ dia | date:'dd MMM yyyy' }}</b>, ¡no te olvides de registrar el tiempo que trabajas!</p>
-      <p><my-date-picker [options]="opcionesFecha" (dateChanged)="onFechaCambiada($event)"></my-date-picker></p>
-    </div>
+  <div class="col-md-2">
+    <label>Seleccionar la fecha</label>
+    <my-date-picker [options]="opcionesFecha" (dateChanged)="onFechaCambiada($event)" [(ngModel)]="fechaInicio"></my-date-picker>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
+  <div class="col-md-2">
     <label for="ddlProyectos">Selecciona un proyecto</label>
-    <select class="custom-select" (change)="seleccionarProyecto()" [(ngModel)]="proyectoId" id="ddlProyectos">
+    <select class="custom-select" (change)="cargarProyecto()" [(ngModel)]="proyectoId" id="ddlProyectos">
       <option *ngFor="let proyecto of proyectosUsuario" [value]="proyecto.id">{{proyecto.nombre}}</option>
     </select>
   </div>
-  <div class="col-md-6"></div>
+  <div class="col-md-8"></div>
 </div>
-<div *ngIf="proyecto !== undefined">
+<div class="mgn-top-1em" *ngIf="proyecto !== undefined">
   <div class="row">
     <div class="col-md-12">
       <h2>Registros del día para el proyecto
@@ -27,20 +22,22 @@
   <div class="row">
     <div class="col-md-2">
       <button type="button" class="btn btn-primary" (click)="altaRapida()">Alta rápida</button>
+      <button type="button" class="btn btn-default" (click)="guardar()">Guardar</button>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <ul class="list-group">
+      <ul class="list-group mgn-top-1em">
         <li class="list-group-item" *ngFor="let registroHora of registrosHora; index as idx">
-          <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
-          {{ idx % 2 == 0 ? 'Entrada' : 'Salida' }} - {{registroHora.fechaHora | date:'short'}}
+            <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
+            {{ idx % 2 == 0 ? 'Entrada' : 'Salida' }} - {{registroHora.fechaHora | date:'shortDate'}}
+            <ngb-timepicker [(ngModel)]="registroHora.hora"></ngb-timepicker>
         </li>
       </ul>
     </div>
   </div>
   <br />
-  <div class="row" *ngIf="registrosHora.length > 0">
+  <div class="row" *ngIf="horas > 0">
     <div class="col-md-12">
       <div class="alert alert-success">
         Enhorabuena, ¡has trabajado

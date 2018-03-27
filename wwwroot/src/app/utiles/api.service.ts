@@ -97,7 +97,7 @@ export class API {
      * @param registro 
      */
     put(entidad: string, id: number, registro: any): Observable<any> {
-        return this.http.put(API.URL + entidad + "/" + id, registro, this.crearCabeceraAutenticacion()).map(respuesta => JSON.parse(respuesta.text()));
+        return this.http.put(API.URL + entidad + "/" + id, registro, this.crearCabeceraAutenticacion()).map(respuesta => respuesta);
     }
 //#endregion
 }
