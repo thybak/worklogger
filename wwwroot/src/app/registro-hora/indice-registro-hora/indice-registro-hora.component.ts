@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { NgbTimepicker, NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { RegistroHora, NOMBRE_ENTIDAD_REGISTRO_HORA, HoraAux } from '../../modelos/registro-hora';
 import { API } from '../../utiles/api.service';
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
@@ -17,7 +17,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
   proyecto: Proyecto;
   registrosHora: RegistroHora[];
   proyectosUsuario: Proyecto[];
-  editable: boolean;
+  guardado: boolean;
   horas: number;
   opcionesFecha: IMyDpOptions;
   fechaInicio: any;
@@ -69,13 +69,16 @@ export class IndiceRegistroHoraComponent implements OnInit {
       });
   }
 
-  cargarRegistrosHora(){
+  cargarRegistrosHora() {
     this.api.getPorParametros(NOMBRE_ENTIDAD_REGISTRO_HORA, [this.proyectoId.toString(), this.dia.toISOString()]).subscribe(
       respuesta => {
         this.registrosHora = respuesta as RegistroHora[];
         for (let registroHora of this.registrosHora) {
-          registroHora.fechaHora = new Date(registroHora.fechaHora);
-          registroHora.hora = new HoraAux(registroHora.fechaHora.getHours(), registroHora.fechaHora.getMinutes(), registroHora.fechaHora.getSeconds());
+          let registroHoraF : RegistroHora = new RegistroHora();
+          Object.assign(registroHoraF, registroHora);
+          registroHoraF.fechaHora = new Date(registroHora.fechaHora);
+          registroHoraF.asignarHoraAuxDeDate();
+          Object.assign(registroHora, registroHoraF);
         }
         this.calcularHoras();
       },
@@ -91,6 +94,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
       respuesta => {
         registroHora.id = respuesta.id;
         registroHora.fechaHora = new Date(respuesta.fechaHora);
+        registroHora.asignarHoraAuxDeDate();
         this.registrosHora.push(registroHora);
         this.calcularHoras();
       });
@@ -109,13 +113,24 @@ export class IndiceRegistroHoraComponent implements OnInit {
     this.cargarRegistrosHora();
   }
 
-  guardar(){
-    for(let registroHora of this.registrosHora){
-      let registroHoraF : RegistroHora = new RegistroHora();
-      Object.assign(registroHoraF, registroHora);
+  mostrarAlertaDeGuardado(numRegistros) {
+      this.guardado = true;
+      setTimeout(() => this.guardado = false, 5000);
+  }
+
+  guardar() {
+    let numRegistros = this.registrosHora.length;
+    for (let registroHora of this.registrosHora) {
+      let registroHoraF: RegistroHora = new RegistroHora();
+      Object.assign(registroHoraF, registroHora); // necesario para tener acceso a métodos de los objetos
       registroHoraF.actualizarDateDeHoraAux();
-      this.api.put(NOMBRE_ENTIDAD_REGISTRO_HORA, registroHoraF.id, registroHoraF).subscribe();
+      this.api.put(NOMBRE_ENTIDAD_REGISTRO_HORA, registroHoraF.id, registroHoraF).subscribe(respuesta => {
+        numRegistros--;
+        if (numRegistros == 0) {
+            this.mostrarAlertaDeGuardado(numRegistros);
+            this.calcularHoras();
+        }
+      });
     }
-    
   }
 }

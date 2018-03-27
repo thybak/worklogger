@@ -9,6 +9,10 @@ export class RegistroHora {
         this.fechaHora.setMinutes(this.hora.minute);
         this.fechaHora.setSeconds(this.hora.second);
     }
+
+    asignarHoraAuxDeDate(){
+        this.hora = new HoraAux(this.fechaHora.getHours(), this.fechaHora.getMinutes(), this.fechaHora.getSeconds());
+    }
 }
 
 export class HoraAux {

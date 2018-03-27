@@ -18,7 +18,7 @@ namespace WorkLogger.Models
 
         public void CopiarPropiedades(RegistroHora registro)
         {
-            FechaHora = registro.FechaHora;
+            FechaHora = registro.FechaHora.ToLocalTime();
             ProyectoId = registro.ProyectoId;
         }
     }

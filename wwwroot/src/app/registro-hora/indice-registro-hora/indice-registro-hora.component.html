@@ -11,6 +11,14 @@
   </div>
   <div class="col-md-8"></div>
 </div>
+<div class="row mgn-top-1em">
+  <div class="col-md-4">
+    <ngb-alert [dismissible]="true" type="success" (close)="guardado = false" *ngIf="guardado">
+      Registros del día {{dia | date:'dd MMM yyyy'}} guardados con éxito.
+    </ngb-alert>
+  </div>
+  <div class="col-md-12"></div>
+</div>
 <div class="mgn-top-1em" *ngIf="proyecto !== undefined">
   <div class="row">
     <div class="col-md-12">
@@ -22,27 +30,27 @@
   <div class="row">
     <div class="col-md-2">
       <button type="button" class="btn btn-primary" (click)="altaRapida()">Alta rápida</button>
-      <button type="button" class="btn btn-default" (click)="guardar()">Guardar</button>
+      <button type="button" class="btn btn-default" *ngIf="registrosHora.length > 0" (click)="guardar()">Guardar</button>
     </div>
+  </div>
+  <div class="row mgn-top-1em" *ngIf="horas > 0">
+    <div class="col-md-4">
+      <div class="alert alert-info">
+        Vaya, ¡has trabajado
+        <b>{{ horas | number:'1.0-2' }} horas</b> durante el {{dia | date:'dd MMM yyyy'}}!
+      </div>
+    </div>
+    <div class="col-md-8"></div>
   </div>
   <div class="row">
     <div class="col-md-12">
       <ul class="list-group mgn-top-1em">
         <li class="list-group-item" *ngFor="let registroHora of registrosHora; index as idx">
-            <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
-            {{ idx % 2 == 0 ? 'Entrada' : 'Salida' }} - {{registroHora.fechaHora | date:'shortDate'}}
-            <ngb-timepicker [(ngModel)]="registroHora.hora"></ngb-timepicker>
+          <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
+          {{ idx % 2 == 0 ? 'Entrada' : 'Salida' }} - {{registroHora.fechaHora | date:'shortDate'}}
+          <ngb-timepicker [(ngModel)]="registroHora.hora"></ngb-timepicker>
         </li>
       </ul>
-    </div>
-  </div>
-  <br />
-  <div class="row" *ngIf="horas > 0">
-    <div class="col-md-12">
-      <div class="alert alert-success">
-        Enhorabuena, ¡has trabajado
-        <b>{{ horas }} horas</b> durante el día!
-      </div>
     </div>
   </div>
 </div>
