@@ -12,6 +12,7 @@ import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
   styles: []
 })
 export class IndiceRegistroHoraComponent implements OnInit {
+  readonly usuarioId = 7;
   dia: Date;
   proyectoId: number;
   proyecto: Proyecto;
@@ -34,7 +35,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api.getPorParametros(NOMBRE_ENTIDAD_PROYECTO, ['usuario', '7']).subscribe(
+    this.api.getPorParametros(NOMBRE_ENTIDAD_PROYECTO, ['usuario', this.usuarioId.toString()]).subscribe(
       respuesta => {
         this.proyectosUsuario = respuesta as Proyecto[];
       },

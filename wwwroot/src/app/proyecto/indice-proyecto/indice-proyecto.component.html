@@ -1,0 +1,53 @@
+<div class="card">
+  <div class="card-body">
+      <button type="button" class="btn btn-primary" (click)="activarAlta()" *ngIf="!altaRegistro">Alta de nuevo proyecto</button>
+      <button type="button" class="btn btn-default" (click)="desactivarAlta()" *ngIf="altaRegistro">Ocultar alta de proyecto</button>
+  </div>
+</div>
+<div class="card mgn-top-1em" *ngIf="altaRegistro">
+  <div class="card-header">
+    Crear nuevo proyecto
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <label for="txtNombre">Nombre:</label>
+      <input type="text" id="txtNombre" class="form-control" placeholder="Introduce el nombre del proyecto" [(ngModel)]="proyecto.nombre" />
+    </div>
+    <div class="form-group">
+      <label for="selTipo">Tipo de proyecto:</label>
+      <select class="form-control" id="selTipo" [(ngModel)]="proyecto.tipo">
+        <option value="0" selected>Ninguno</option>
+        <option value="1">Ocio</option>
+        <option value="2">Laboral</option>
+      </select>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="crearProyecto()">Guardar</button>
+  </div>
+</div>
+<div class="card mgn-top-1em">
+  <div class="card-header">
+    Lista de proyectos
+  </div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let proyecto of proyectos">
+          <td>
+            <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(proyecto.id)">X</button>
+          </td>
+          <td>
+            <b>{{ proyecto.nombre }}</b>
+          </td>
+          <td>{{ proyecto.tipoString }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { RegistroHoraModule } from './registro-hora/registro-hora.module';
 import { HttpModule } from '@angular/http';
 import { API } from './utiles/api.service';
+import { ProyectoModule } from './proyecto/proyecto.module';
 
 registerLocaleData(localeEs);
 
@@ -24,6 +25,7 @@ registerLocaleData(localeEs);
     AppRoutingModule,
     BrowserModule,
     RegistroHoraModule,
+    ProyectoModule,
     NgbModule.forRoot()
   ],
   providers: [API, {provide: LOCALE_ID, useValue: 'es' }],

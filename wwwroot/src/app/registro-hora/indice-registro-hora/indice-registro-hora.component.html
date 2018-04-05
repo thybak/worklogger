@@ -44,13 +44,28 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <ul class="list-group mgn-top-1em">
-        <li class="list-group-item" *ngFor="let registroHora of registrosHora; index as idx">
-          <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
-          {{ idx % 2 == 0 ? 'Entrada' : 'Salida' }} - {{registroHora.fechaHora | date:'shortDate'}}
-          <ngb-timepicker [(ngModel)]="registroHora.hora"></ngb-timepicker>
-        </li>
-      </ul>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let registroHora of registrosHora; index as idx">
+            <td>
+              <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
+            </td>
+            <td>{{ idx % 2 == 0 ? 'Entrada' : 'Salida' }}</td>
+            <td> {{registroHora.fechaHora | date:'shortDate'}}</td>
+            <td>
+              <ngb-timepicker [(ngModel)]="registroHora.hora"></ngb-timepicker>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
