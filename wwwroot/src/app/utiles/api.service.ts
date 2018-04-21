@@ -43,8 +43,7 @@ export class API {
     private crearCabeceraAutenticacion() : RequestOptions {
         let requestOptions: RequestOptions = null;
         let token = this.autenticacion.obtenerToken();
-        console.log(token);
-        if (token != undefined){
+        if (token !== null){
             let headers: Headers = new Headers({ 'Authorization': 'Bearer ' + token });
             requestOptions = new RequestOptions({ headers: headers });
         }
