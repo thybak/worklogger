@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkLogger.Models;
 
 namespace WorkLogger.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize]
     public class ProyectoController : BaseController
     {
         private const string NOMBRE_OBTENCION_PROYECTO = "ObtenerProyecto";

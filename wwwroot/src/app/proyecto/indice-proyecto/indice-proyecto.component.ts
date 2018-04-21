@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { API } from '../../utiles/api.service';
 import { Proyecto, ProyectoTipo, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
+import { Autenticacion } from '../../utiles/auth.service';
 
 @Component({
   selector: 'app-indice-proyecto',
@@ -8,12 +9,12 @@ import { Proyecto, ProyectoTipo, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/p
   styles: []
 })
 export class IndiceProyectoComponent implements OnInit {
-  readonly usuarioId = 7;
+  readonly usuarioId = this.autenticacion.obtenerUsuarioId();
   altaRegistro: boolean;
   proyectos: Proyecto[];
   proyecto: Proyecto;
 
-  constructor(private api: API) {
+  constructor(private api: API, private autenticacion: Autenticacion) {
     this.proyectos = [];
   }
 

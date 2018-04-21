@@ -3,8 +3,8 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { NgbTimepicker, NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { RegistroHora, NOMBRE_ENTIDAD_REGISTRO_HORA, HoraAux } from '../../modelos/registro-hora';
 import { API } from '../../utiles/api.service';
-import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
+import { Autenticacion } from '../../utiles/auth.service';
 
 @Component({
   selector: 'app-indice-registro-hora',
@@ -12,7 +12,7 @@ import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
   styles: []
 })
 export class IndiceRegistroHoraComponent implements OnInit {
-  readonly usuarioId = 7;
+  readonly usuarioId = this.autenticacion.obtenerUsuarioId();
   dia: Date;
   proyectoId: number;
   proyecto: Proyecto;
@@ -20,17 +20,13 @@ export class IndiceRegistroHoraComponent implements OnInit {
   proyectosUsuario: Proyecto[];
   guardado: boolean;
   horas: number;
-  opcionesFecha: IMyDpOptions;
   fechaInicio: any;
 
-  constructor(private api: API) {
+  constructor(private api: API, private autenticacion: Autenticacion) {
     this.dia = new Date();
     this.registrosHora = [];
     this.proyectosUsuario = [];
     this.fechaInicio = { jsdate: this.dia };
-    this.opcionesFecha = {
-      dateFormat: 'dd mmm yyyy'
-    };
 
   }
 
@@ -109,8 +105,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
       });
   }
 
-  onFechaCambiada(evento: IMyDateModel) {
-    this.dia = evento.jsdate;
+  onFechaCambiada() {
     this.cargarRegistrosHora();
   }
 

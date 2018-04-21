@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Autenticacion } from '../utiles/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -6,11 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class NavComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-    
+  get autenticado(): boolean{
+    return this.autenticacion.isSesionActiva();
   }
 
+  constructor(private autenticacion: Autenticacion) { }
+
+  ngOnInit() {
+  }
+
+  cerrarSesion(){
+    this.autenticacion.cerrarSesion();
+  }
 }

@@ -8,6 +8,7 @@ import 'rxjs/operator/delay';
 import 'rxjs/operator/mergeMap';
 import 'rxjs/operator/switchMap';
 import { ErrorObservable } from "rxjs/observable/ErrorObservable";
+import { Autenticacion } from "./auth.service";
 
 export enum EstadosHTTP {
     // Familia 200
@@ -25,7 +26,7 @@ export enum EstadosHTTP {
 export class API {
     static URL: string = environment.url;
     
-    constructor(private http: Http) {}
+    constructor(private http: Http, private autenticacion: Autenticacion) {}
 
 //#region Métodos de utilidad
     /**
@@ -41,7 +42,8 @@ export class API {
      */
     private crearCabeceraAutenticacion() : RequestOptions {
         let requestOptions: RequestOptions = null;
-        let token = sessionStorage.getItem('tokenUsuario');
+        let token = this.autenticacion.obtenerToken();
+        console.log(token);
         if (token != undefined){
             let headers: Headers = new Headers({ 'Authorization': 'Bearer ' + token });
             requestOptions = new RequestOptions({ headers: headers });
@@ -72,7 +74,7 @@ export class API {
      * @param parametros 
      */
     getPorParametros(entidad: string, parametros: string[]): Observable<any> {
-        return this.http.get(API.URL + entidad + "/" + parametros.join('/')).map(respuesta => JSON.parse(respuesta.text()));
+        return this.http.get(API.URL + entidad + "/" + parametros.join('/'), this.crearCabeceraAutenticacion()).map(respuesta => JSON.parse(respuesta.text()));
     }
     /**
      * Utiliza el método HTTP DELETE para borrar un registro a través de su identificador

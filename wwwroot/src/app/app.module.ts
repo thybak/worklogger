@@ -11,6 +11,8 @@ import { RegistroHoraModule } from './registro-hora/registro-hora.module';
 import { HttpModule } from '@angular/http';
 import { API } from './utiles/api.service';
 import { ProyectoModule } from './proyecto/proyecto.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { Autenticacion } from './utiles/auth.service';
 
 registerLocaleData(localeEs);
 
@@ -26,9 +28,10 @@ registerLocaleData(localeEs);
     BrowserModule,
     RegistroHoraModule,
     ProyectoModule,
+    UsuarioModule,
     NgbModule.forRoot()
   ],
-  providers: [API, {provide: LOCALE_ID, useValue: 'es' }],
+  providers: [API, Autenticacion, {provide: LOCALE_ID, useValue: 'es' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

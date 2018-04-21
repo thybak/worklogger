@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "assets/fa/css/fontawesome-all.min.css";
 
 .container-fluid {
     margin-top: 1em;
