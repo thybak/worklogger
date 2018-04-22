@@ -18,8 +18,8 @@ export class RegistroComponent implements OnInit {
   get nombreUsuario() {
     return this.frmUsuario.get('nombreUsuario');
   }
-  get email() {
-    return this.frmUsuario.get('email');
+  get correo() {
+    return this.frmUsuario.get('correo');
   }
   get password() {
     return this.frmUsuario.get('password');
@@ -34,7 +34,7 @@ export class RegistroComponent implements OnInit {
     this.usuario = new Usuario();
     this.frmUsuario = this.fb.group({
       "nombreUsuario": new FormControl(this.usuario.nombreUsuario, [Validators.pattern(ValidadoresPersonalizados.nombreUsuarioRegExp), Validators.required]),
-      "email": new FormControl(this.usuario.correo, [Validators.email]),
+      "correo": new FormControl(this.usuario.correo, [Validators.email]),
       "password": new FormControl(this.usuario.password, [Validators.pattern(ValidadoresPersonalizados.passwordRegExp), Validators.required]),
       "confirmarPassword": new FormControl(this.confirmarPassword, [Validators.required])
     },
