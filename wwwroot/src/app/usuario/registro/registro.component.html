@@ -1,3 +1,41 @@
-<p>
-  registro works!
-</p>
+<div class="card">
+  <div class="card-header">Registro de usuario</div>
+  <div class="card-body">
+    <div class="alert alert-success" *ngIf="usuarioCreado">
+      <p>El usuario se ha creado con éxito. <a routerLink="/login">¡Iniciar sesión!</a></p>
+    </div>
+    <form [formGroup]="frmUsuario" (ngSubmit)="registrarUsuario()" *ngIf="!usuarioCreado">
+      <div class="alert alert-warning" *ngIf="frmUsuario.dirty && !frmUsuario.valid">
+        <ul>
+          <li *ngIf="(nombreUsuario.dirty || nombreUsuario.touched) && nombreUsuario.errors && nombreUsuario.errors.pattern">Introduce un nombre de usuario válido</li>
+          <li *ngIf="(nombreUsuario.dirty || nombreUsuario.touched) && nombreUsuario.errors && nombreUsuario.errors.required">Debes introducir un nombre de usuario</li>
+          <li *ngIf="(email.dirty || email.touched) && email.errors && email.errors.email">Debes introducir un email válido</li>
+          <li *ngIf="(password.dirty || password.touched) && password.errors && password.errors.pattern">Debes introducir una contraseña válida</li>
+          <li *ngIf="(password.dirty || password.touched) && password.errors && password.errors.required">Debes introducir una contraseña</li>
+          <li *ngIf="(fieldConfirmarPassword.dirty || fieldConfirmarPassword.touched) && fieldConfirmarPassword.errors && fieldConfirmarPassword.errors.MatchFields">
+            Las contraseñas introducidas deben coincidir
+          </li>
+        </ul>
+      </div>
+      <div class="form-group">
+        <label for="txtNombreUsuario">Nombre de usuario</label>
+        <input type="text" id="txtNombreUsuario" class="form-control" [(ngModel)]="usuario.nombreUsuario" formControlName="nombreUsuario"
+        />
+      </div>
+      <div class="form-group">
+        <label for="txtEmail">Email</label>
+        <input type="email" id="txtEmail" class="form-control" [(ngModel)]="usuario.email" formControlName="email" />
+      </div>
+      <div class="form-group">
+        <label for="txtPassword">Contraseña</label>
+        <input type="password" id="txtPassword" class="form-control" [(ngModel)]="usuario.password" formControlName="password" />
+      </div>
+      <div class="form-group">
+        <label for="txtConfirmarPassword">Confirmar contraseña</label>
+        <input type="password" id="txtConfirmarPassword" class="form-control" [(ngModel)]="confirmarPassword" formControlName="confirmarPassword"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary mgn-top-1em" [disabled]="!frmUsuario.valid">Registrar</button>
+    </form>
+  </div>
+</div>

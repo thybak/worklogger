@@ -27,7 +27,7 @@ namespace WorkLogger.Controllers
         [HttpPost, AllowAnonymous]
         public IActionResult Crear([FromBody] Usuario usuario)
         {
-            if (usuario == null)
+            if (usuario == null || NombreUsuarioEnUso(usuario))
             {
                 return BadRequest();
             }
@@ -73,5 +73,12 @@ namespace WorkLogger.Controllers
 
             return new NoContentResult();
         }
+
+
+        #region Métodos privados
+        private bool NombreUsuarioEnUso(Usuario usuario){
+            return _contexto.Usuario.FirstOrDefault(x=> x.NombreUsuario == usuario.NombreUsuario) != null;
+        }
+        #endregion
     }
 }
