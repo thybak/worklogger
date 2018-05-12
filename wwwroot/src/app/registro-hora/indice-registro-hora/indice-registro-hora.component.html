@@ -1,74 +1,80 @@
-<div class="row">
-  <div class="col-md-2">
-    <label>Seleccionar la fecha</label>
-    <input class="form-control" placeholder="dd-MM-yyyy" name="dp" [(ngModel)]="dia" (change)="onFechaCambiada()" ngbDatepicker #d="ngbDatepicker">
-    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-      <i class="fa fa-calendar"></i>
-    </button>
-  </div>
-  <div class="col-md-2">
-    <label for="ddlProyectos">Selecciona un proyecto</label>
-    <select class="custom-select" (change)="cargarProyecto()" [(ngModel)]="proyectoId" id="ddlProyectos">
-      <option *ngFor="let proyecto of proyectosUsuario" [value]="proyecto.id">{{proyecto.nombre}}</option>
-    </select>
-  </div>
-  <div class="col-md-8"></div>
-</div>
 <div class="row mgn-top-1em">
   <div class="col-md-4">
     <ngb-alert [dismissible]="true" type="success" (close)="guardado = false" *ngIf="guardado">
-      Registros del día {{dia | date:'dd MMM yyyy'}} guardados con éxito.
+      Registros del día {{fechaHoy | date:'dd MMM yyyy'}} guardados con éxito.
     </ngb-alert>
   </div>
   <div class="col-md-12"></div>
 </div>
-<div class="mgn-top-1em" *ngIf="proyecto !== undefined">
-  <div class="row">
-    <div class="col-md-12">
-      <h2>Registros del día para el proyecto
-        <b>{{proyecto.nombre}}</b>
-      </h2>
+<ng-template #filtro let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4>Establecer filtro</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cerrar')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp" [(ngModel)]="dia" (select)="onFechaCambiada()"></ngb-datepicker>
+    <div class="mgn-top-1em">
+      <label for="ddlProyectos">Proyecto</label>
+      <select class="custom-select" (change)="cargarProyecto()" [(ngModel)]="proyectoId" id="ddlProyectos">
+        <option *ngFor="let proyecto of proyectosUsuario" [value]="proyecto.id">{{proyecto.nombre}}</option>
+      </select>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-2">
-      <button type="button" class="btn btn-primary" (click)="altaRapida()">Alta rápida</button>
-      <button type="button" class="btn btn-default" *ngIf="registrosHora.length > 0" (click)="guardar()">Guardar</button>
-    </div>
-  </div>
-  <div class="row mgn-top-1em" *ngIf="horas > 0">
-    <div class="col-md-4">
-      <div class="alert alert-info">
-        Vaya, ¡has trabajado
-        <b>{{ horas | number:'1.0-2' }} horas</b> durante el {{dia | date:'dd MMM yyyy'}}!
+</ng-template>
+<div class="mgn-top-1em card" *ngIf="proyecto !== undefined">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>
+          <b>{{proyecto.nombre}}</b> - {{fechaHoy | date:'dd MMM yyyy'}}
+        </h2>
+        <h4>
+          <b>{{ horas | number:'1.0-2' }}</b> horas trabajadas
+        </h4>
       </div>
     </div>
-    <div class="col-md-8"></div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Tipo</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let registroHora of registrosHora; index as idx">
-            <td>
-              <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
-            </td>
-            <td>{{ idx % 2 == 0 ? 'Entrada' : 'Salida' }}</td>
-            <td> {{registroHora.fechaHora | date:'shortDate'}}</td>
-            <td>
-              <ngb-timepicker [(ngModel)]="registroHora.hora"></ngb-timepicker>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+</div>
+<div class="card mgn-top-1em" *ngIf="proyecto !== undefined">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        <button type="button" class="btn btn-primary" (click)="altaRapida()">
+          <i class="fa fa-plus"></i> Alta rápida</button>
+        <button type="button" class="btn btn-default" (click)="open(filtro)">
+          <i class="fa fa-filter"></i> Establecer filtro</button>
+        <button type="button" class="btn btn-default" *ngIf="registrosHora.length > 0" (click)="guardar()">
+          <i class="fa fa-save"></i> Guardar</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table mgn-top-1em">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tipo</th>
+              <th>Hora</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let registroHora of registrosHora; index as idx">
+              <td>
+                <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
+              </td>
+              <td>{{ idx % 2 == 0 ? 'Entrada' : 'Salida' }}</td>
+              <td>
+                <ngb-timepicker [(ngModel)]="registroHora.hora"></ngb-timepicker>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+</div>
+<div class="alert alert-info" *ngIf="proyecto === undefined">
+  <i class="fa fa-circle-info"></i> Aún no has creado ningún proyecto, ¿sobre qué vas a registrar los tiempos?
 </div>

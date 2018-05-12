@@ -78,6 +78,8 @@ namespace WorkLogger.Controllers
                 return NotFound();
             }
 
+            // Antes de eliminar el proyecto nos aseguramos de eliminar los registros de tiempos para no dejar basura en la base de datos.
+            _contexto.Registro.RemoveRange(_contexto.Registro.Where(x=>x.ProyectoId == proyecto.Id));
             _contexto.Proyecto.Remove(proyecto);
             _contexto.SaveChanges();
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { API } from '../../utiles/api.service';
 import { Proyecto, ProyectoTipo, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
 import { Autenticacion } from '../../utiles/auth.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-indice-proyecto',
@@ -10,24 +11,23 @@ import { Autenticacion } from '../../utiles/auth.service';
 })
 export class IndiceProyectoComponent implements OnInit {
   readonly usuarioId = this.autenticacion.obtenerUsuarioId();
-  altaRegistro: boolean;
   proyectos: Proyecto[];
   proyecto: Proyecto;
 
-  constructor(private api: API, private autenticacion: Autenticacion) {
+  constructor(private api: API, private autenticacion: Autenticacion, private modalService: NgbModal) {
     this.proyectos = [];
   }
 
-  activarAlta() {
-    this.proyecto = new Proyecto();
-    this.altaRegistro = true;
-  }
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
 
-  desactivarAlta() {
-    this.altaRegistro = false;
+    }, (reason) => {
+
+    });
   }
 
   ngOnInit() {
+    this.proyecto = new Proyecto();
     this.api.getPorParametros(NOMBRE_ENTIDAD_PROYECTO, ['usuario', this.usuarioId.toString()]).subscribe(
       respuesta => {
         let proyectosDB: Proyecto[] = respuesta as Proyecto[];
@@ -53,8 +53,7 @@ export class IndiceProyectoComponent implements OnInit {
     this.api.post(NOMBRE_ENTIDAD_PROYECTO, this.proyecto).subscribe(
       respuesta => {
         this.proyectos.push(Object.assign(new Proyecto(), respuesta as Proyecto));
-        this.desactivarAlta();
-        this.proyecto = null;
+        this.proyecto = new Proyecto();
       },
       error => {
         console.log("Error ", error);

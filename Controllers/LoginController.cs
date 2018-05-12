@@ -27,7 +27,7 @@ namespace WorkLogger.Controllers
         [HttpPost]
         public IActionResult Login([FromBody]Login login)
         {
-            IActionResult respuesta = Unauthorized();
+            IActionResult respuesta = NotFound();
             var user = BuscarUsuario(login);
 
             if (user != null)

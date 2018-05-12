@@ -2,33 +2,42 @@
   <div class="col-md-4"></div>
   <div class="col-md-4">
     <div class="card">
-      <div class="card-header text-center">
-        Iniciar sesión
-      </div>
+      <div class="card-header"></div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-8">
-            <label for="txtNombreUsuario">Nombre de usuario</label>
-            <input type="text" id="txtNombreUsuario" [(ngModel)]="login.nombreUsuario" class="form-control" />
-          </div>
-          <div class="col-md-8"></div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-8">
-            <label for="txtPassword">Contraseña</label>
-            <input type="password" id="txtPassword" [(ngModel)]="login.password" class="form-control" />
-          </div>
-          <div class="col-md-2"></div>
-        </div>
-        <div class="row">
+        <form [formGroup]="frmLogin" (ngSubmit)="onIniciarSesion()">
+          <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <button class="btn btn-primary mgn-top-1em" (click)="onIniciarSesion()">Iniciar sesión</button>
+              <div class="alert alert-danger" *ngIf="errorLogin">
+                <i class="fa fa-info-circle"></i> El usuario y contraseña introducidos no se encuentran en base de datos.</div>
             </div>
             <div class="col-md-2"></div>
-        </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <label for="txtNombreUsuario">Nombre de usuario</label>
+              <input type="text" id="txtNombreUsuario" [(ngModel)]="login.nombreUsuario" formControlName="nombreUsuario" class="form-control"
+              />
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <label for="txtPassword">Contraseña</label>
+              <input type="password" id="txtPassword" [(ngModel)]="login.password" formControlName="password" class="form-control" />
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <button class="btn btn-primary mgn-top-1em" [disabled]="frmLogin.invalid" type="submit">Iniciar sesión</button>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

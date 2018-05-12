@@ -1,33 +1,34 @@
 <div class="card">
   <div class="card-body">
-      <button type="button" class="btn btn-primary" (click)="activarAlta()" *ngIf="!altaRegistro">Alta de nuevo proyecto</button>
-      <button type="button" class="btn btn-default" (click)="desactivarAlta()" *ngIf="altaRegistro">Ocultar alta de proyecto</button>
+    <button type="button" class="btn btn-primary" (click)="open(altaProyecto)"><i class="fa fa-plus"></i> Nuevo proyecto</button>
   </div>
 </div>
-<div class="card mgn-top-1em" *ngIf="altaRegistro">
-  <div class="card-header">
-    Crear nuevo proyecto
+<ng-template #altaProyecto let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Alta de proyecto</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cerrar')">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-  <div class="card-body">
-    <div class="form-group">
-      <label for="txtNombre">Nombre:</label>
-      <input type="text" id="txtNombre" class="form-control" placeholder="Introduce el nombre del proyecto" [(ngModel)]="proyecto.nombre" />
-    </div>
-    <div class="form-group">
-      <label for="selTipo">Tipo de proyecto:</label>
-      <select class="form-control" id="selTipo" [(ngModel)]="proyecto.tipo">
-        <option value="0" selected>Ninguno</option>
-        <option value="1">Ocio</option>
-        <option value="2">Laboral</option>
-      </select>
-    </div>
-    <button type="button" class="btn btn-primary" (click)="crearProyecto()">Guardar</button>
+  <div class="modal-body">
+      <div class="form-group">
+          <label for="txtNombre">Nombre:</label>
+          <input type="text" id="txtNombre" class="form-control" placeholder="Introduce el nombre del proyecto" [(ngModel)]="proyecto.nombre"/>
+        </div>
+        <div class="form-group">
+          <label for="selTipo">Tipo de proyecto:</label>
+          <select class="form-control" id="selTipo" [(ngModel)]="proyecto.tipo">
+            <option value="0" selected>Ninguno</option>
+            <option value="1">Ocio</option>
+            <option value="2">Laboral</option>
+          </select>
+        </div>  
   </div>
-</div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="crearProyecto(); c('Guardar')">Guardar</button>
+  </div>
+</ng-template>
 <div class="card mgn-top-1em">
-  <div class="card-header">
-    Lista de proyectos
-  </div>
   <div class="card-body">
     <table class="table">
       <thead>
@@ -43,7 +44,7 @@
             <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(proyecto.id)">X</button>
           </td>
           <td>
-            <b>{{ proyecto.nombre }}</b>
+            {{ proyecto.nombre }}
           </td>
           <td>{{ proyecto.tipoString }}</td>
         </tr>

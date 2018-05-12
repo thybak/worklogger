@@ -1,4 +1,4 @@
-import { Http, HttpModule, RequestOptions, Headers } from "@angular/http";
+import { Http, HttpModule, RequestOptions, Headers, Response } from "@angular/http";
 import { Injectable, Injector } from "@angular/core";
 import { Observable } from 'rxjs';
 import { environment } from "../../environments/environment";
@@ -9,6 +9,7 @@ import 'rxjs/operator/mergeMap';
 import 'rxjs/operator/switchMap';
 import { ErrorObservable } from "rxjs/observable/ErrorObservable";
 import { Autenticacion } from "./auth.service";
+import { Router } from "@angular/router";
 
 export enum EstadosHTTP {
     // Familia 200
@@ -26,17 +27,9 @@ export enum EstadosHTTP {
 export class API {
     static URL: string = environment.url;
     
-    constructor(private http: Http, private autenticacion: Autenticacion) {}
+    constructor(private http: Http, private autenticacion: Autenticacion, private router: Router) {}
 
 //#region Métodos de utilidad
-    /**
-     * A partir de la respuesta errónea pasada por parámetro se realiza el tratamiento del error
-     * @param error 
-     */
-    private manejadorErrores(error: Response): ErrorObservable {
-        let errMsg = `Error en el API [${error}]`;
-        return Observable.throw(errMsg);
-    }
     /**
      * Genera el objeto de opciones de petición con la cabecera de autenticación a partir del token de usuario
      */
@@ -49,6 +42,28 @@ export class API {
         }
         return requestOptions;
     }
+    /**
+     * Se encarga de tratar las diferentes respuestas desde el API
+     * @param respuesta 
+     */
+    private tratarRespuesta(respuesta: Response){
+        if (respuesta === null || respuesta === undefined || respuesta.text() === "")
+            return respuesta;
+        
+        return JSON.parse(respuesta.text());
+    }
+    /**
+     * A partir de la respuesta errónea pasada por parámetro se realiza el tratamiento del error
+     * @param error 
+     */
+    private manejadorErrores(error: Response): ErrorObservable {
+        // Quiere decir que hemos perdido la sesión con el API, por lo que cerramos sesión.
+        if (error.status === EstadosHTTP.NoAutorizado){
+            this.autenticacion.cerrarSesion();
+        }
+        let errMsg = `Error en el API [${error}]`;
+        return Observable.throw(errMsg);
+    }
 //#endregion
 
 //#region Métodos de acceso
@@ -57,7 +72,9 @@ export class API {
      * @param entidad 
      */
     getTodos(entidad: string): Observable<any> {
-        return this.http.get(API.URL + entidad, this.crearCabeceraAutenticacion()).map(respuesta => JSON.parse(respuesta.text()));
+        return this.http.get(API.URL + entidad, this.crearCabeceraAutenticacion()).map(
+            respuesta => this.tratarRespuesta(respuesta),
+            error => this.manejadorErrores(error));
     }
     /**
      * Utiliza el método HTTP GET para obtener un registro por el identificador
@@ -65,7 +82,9 @@ export class API {
      * @param id 
      */
     getPorId(entidad: string, id: string): Observable<any> {
-        return this.http.get(API.URL + entidad + "/" + id, this.crearCabeceraAutenticacion()).map(respuesta => JSON.parse(respuesta.text()));
+        return this.http.get(API.URL + entidad + "/" + id, this.crearCabeceraAutenticacion()).map(
+            respuesta => this.tratarRespuesta(respuesta),
+            error => this.manejadorErrores(error));
     }
     /**
      * Utiliza el método HTTP GET haciendo uso de parámetros para obtener registros
@@ -73,7 +92,9 @@ export class API {
      * @param parametros 
      */
     getPorParametros(entidad: string, parametros: string[]): Observable<any> {
-        return this.http.get(API.URL + entidad + "/" + parametros.join('/'), this.crearCabeceraAutenticacion()).map(respuesta => JSON.parse(respuesta.text()));
+        return this.http.get(API.URL + entidad + "/" + parametros.join('/'), this.crearCabeceraAutenticacion()).map(
+            respuesta => this.tratarRespuesta(respuesta),
+            error => this.manejadorErrores(error));
     }
     /**
      * Utiliza el método HTTP DELETE para borrar un registro a través de su identificador
@@ -81,7 +102,9 @@ export class API {
      * @param id 
      */
     deletePorId(entidad: string, id: string): Observable<any> {
-        return this.http.delete(API.URL + entidad + "/" + id, this.crearCabeceraAutenticacion()).map(respuesta => respuesta);
+        return this.http.delete(API.URL + entidad + "/" + id, this.crearCabeceraAutenticacion()).map(
+            respuesta => this.tratarRespuesta(respuesta),
+            error => this.manejadorErrores(error));
     }
     /**
      * Utiliza el método HTTP POST para comunicarse con el API e insertar registros
@@ -89,7 +112,9 @@ export class API {
      * @param registro 
      */
     post(entidad: string, registro: any): Observable<any> {
-        return this.http.post(API.URL + entidad, registro, this.crearCabeceraAutenticacion()).map(respuesta => JSON.parse(respuesta.text()));
+        return this.http.post(API.URL + entidad, registro, this.crearCabeceraAutenticacion()).map(
+            respuesta => this.tratarRespuesta(respuesta),
+            error => this.manejadorErrores(error));
     }
     /**
      * Utiliza el método HTTP PUT para comunicarse con el API y actualizar registros por identificador
@@ -98,7 +123,9 @@ export class API {
      * @param registro 
      */
     put(entidad: string, id: number, registro: any): Observable<any> {
-        return this.http.put(API.URL + entidad + "/" + id, registro, this.crearCabeceraAutenticacion()).map(respuesta => respuesta);
+        return this.http.put(API.URL + entidad + "/" + id, registro, this.crearCabeceraAutenticacion()).map(
+            respuesta => this.tratarRespuesta(respuesta), 
+            error => this.manejadorErrores(error));
     }
 //#endregion
 }

@@ -5,6 +5,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { Guardian } from './utiles/auth.guard';
 
 const appRutas : Routes = [
+  { path: '', component: InicioComponent, canActivate: [Guardian] },
   { path: 'inicio', component: InicioComponent, canActivate: [Guardian] }
 ]
 
