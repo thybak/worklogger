@@ -7,16 +7,20 @@ import { Autenticacion } from '../utiles/auth.service';
   styles: []
 })
 export class NavComponent implements OnInit {
-  get autenticado(): boolean{
+
+  menuColapsado: boolean;
+
+  get autenticado(): boolean {
     return this.autenticacion.isSesionActiva();
   }
 
   constructor(private autenticacion: Autenticacion) { }
 
   ngOnInit() {
+    this.menuColapsado = true;
   }
 
-  cerrarSesion(){
+  cerrarSesion() {
     this.autenticacion.cerrarSesion();
   }
 }
