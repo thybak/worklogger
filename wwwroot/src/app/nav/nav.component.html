@@ -15,6 +15,9 @@
       <li class="nav-item" *ngIf="autenticado">
         <a class="nav-link" routerLink="/registro-hora" routerLinkActive="active">Registro de tiempos</a>
       </li>
+      <li class="nav-item" *ngIf="autenticado">
+        <a class="nav-link" routerLink="/estadistica" routerLinkActive="active">Estadísticas</a>
+      </li>
       <li class="nav-item" *ngIf="!autenticado">
         <a class="nav-link" routerLink="/login" routerLinkActive="active">Iniciar sesión</a>
       </li>

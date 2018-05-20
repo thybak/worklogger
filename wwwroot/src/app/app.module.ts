@@ -13,6 +13,7 @@ import { API } from './utiles/api.service';
 import { ProyectoModule } from './proyecto/proyecto.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { Autenticacion } from './utiles/auth.service';
+import { EstadisticaModule } from './estadistica/estadistica.module';
 
 registerLocaleData(localeEs);
 
@@ -29,6 +30,7 @@ registerLocaleData(localeEs);
     RegistroHoraModule,
     ProyectoModule,
     UsuarioModule,
+    EstadisticaModule,
     NgbModule.forRoot()
   ],
   providers: [API, Autenticacion, {provide: LOCALE_ID, useValue: 'es' }],

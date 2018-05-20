@@ -15,4 +15,8 @@ export class UtilesFechas {
         ngbDateStruct = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear() };
         return ngbDateStruct;
     }
+
+    static ObtenerDateStringDeNgbDateStruct(ngbDateStruct: NgbDateStruct): string {
+        return `${ngbDateStruct.year}-${ngbDateStruct.month}-${ngbDateStruct.day}`;
+    }
 }

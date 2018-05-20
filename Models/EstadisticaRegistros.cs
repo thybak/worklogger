@@ -54,23 +54,18 @@ namespace WorkLogger.Models
         private void GenerarRegistroDia(List<RegistroHora> registros)
         {
             // Si tenemos un número de registros impar, procedemos a eliminar el último para realizar el cálculo.
-            if (registros.Count % 2 != 0)
-            {
-                registros.RemoveAt(registros.Count - 1);
-            }
+            if (registros.Count % 2 != 0) registros.RemoveAt(registros.Count - 1);
+            if (registros.Count == 0) return;
+
             var sumaHoras = 0.0;
-            var indice = 0;
-            for (; indice < registros.Count; indice += 2)
+            for (var indice = 0; indice < registros.Count; indice += 2)
             {
                 var diferencia = new TimeSpan(registros[indice + 1].FechaHora.Ticks - registros[indice].FechaHora.Ticks);
                 sumaHoras += diferencia.TotalHours;
             }
-            // Si al menos hemos tenido un registro, nos molestamos en asignar el resultado
-            if (registros.Count > 0)
-            {
-                this.Horas = sumaHoras;
-                this.Dia = registros.First().FechaHora.Date;
-            }
+            
+            this.Horas = sumaHoras;
+            this.Dia = registros.First().FechaHora.Date;
         }
     }
 }
