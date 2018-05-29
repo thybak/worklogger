@@ -23,6 +23,7 @@ export class RegistroHoraComponent implements OnInit {
   proyectosUsuario: Proyecto[];
 
   // Configuración de componente estadísticas
+  view: any[] = [600, 400];
   showXAxis = true;
   showYAxis = true;
   gradient = false;
@@ -68,7 +69,6 @@ export class RegistroHoraComponent implements OnInit {
           for (let registroDia of estadistica.registrosDia){
             this.resultados.push({ "name": registroDia.dia, "value": registroDia.horas });
           }
-          console.log(this.resultados);
           Object.assign(this, this.resultados);
         });
   }

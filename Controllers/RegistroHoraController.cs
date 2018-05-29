@@ -47,6 +47,8 @@ namespace WorkLogger.Controllers
 
             if (registro.FechaHora == null || registro.FechaHora == DateTime.MinValue) {
                 registro.FechaHora = DateTime.Now;
+            } else {
+                registro.FechaHora = registro.FechaHora.ToLocalTime();
             }
 
             _contexto.Registro.Add(registro);

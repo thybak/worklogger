@@ -1,17 +1,34 @@
 <div class="card">
   <div class="card-header"></div>
   <div class="card-body">
-    <label for="ddlProyectos">Proyecto</label>
-    <select class="custom-select" [(ngModel)]="proyectoId" id="ddlProyectos">
-      <option *ngFor="let proyecto of proyectosUsuario" [value]="proyecto.id">{{proyecto.nombre}}</option>
-    </select>
-    <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp1" [(ngModel)]="dpFechaInicio" (select)="onFechaCambiada('dpFechaInicio')"></ngb-datepicker>
-    <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp2" [(ngModel)]="dpFechaFin" (select)="onFechaCambiada('dpFechaFin')"></ngb-datepicker>
-    <button type="button" class="btn btn-primary" (click)="generarEstadisticas()" *ngIf="criterioEstablecido">Generar</button>
-
-    <ngx-charts-bar-vertical *ngIf="resultados !== undefined" [view]="view" [scheme]="colorScheme" [results]="resultados" [gradient]="gradient"
-      [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-      [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
-    </ngx-charts-bar-vertical>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="ddlProyectos">Proyecto</label>
+            <select class="custom-select" [(ngModel)]="proyectoId" id="ddlProyectos">
+              <option *ngFor="let proyecto of proyectosUsuario" [value]="proyecto.id">{{proyecto.nombre}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mgn-top-1em">
+          <div class="col-md-12">
+            <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp1" [(ngModel)]="dpFechaInicio" (select)="onFechaCambiada('dpFechaInicio')"></ngb-datepicker>
+            <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp2" [(ngModel)]="dpFechaFin" (select)="onFechaCambiada('dpFechaFin')"></ngb-datepicker>
+          </div>
+        </div>
+        <div class="row mgn-top-1em">
+          <div class="col-md-12">
+            <button type="button" class="btn btn-primary" (click)="generarEstadisticas()" *ngIf="criterioEstablecido">
+              <i class="fa fa-play"></i> Generar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <ngx-charts-bar-vertical *ngIf="resultados !== undefined" [view]="view" [scheme]="colorScheme" [results]="resultados" [gradient]="gradient"
+          [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+        </ngx-charts-bar-vertical>
+      </div>
+    </div>
   </div>
-</div>

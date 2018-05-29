@@ -105,6 +105,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
   altaRapida() {
     let registroHora: RegistroHora = new RegistroHora();
     registroHora.proyectoId = this.proyecto.id;
+    registroHora.fechaHora = UtilesFechas.ObtenerDateConHoraDeNgbDateStruct(this.dia, true);
     this.api.post(NOMBRE_ENTIDAD_REGISTRO_HORA, registroHora).subscribe(
       respuesta => {
         registroHora.id = respuesta.id;
