@@ -10,13 +10,9 @@ export class UtilesFechas {
         return fecha;
     }
 
-    static ObtenerDateConHoraDeNgbDateStruct(ngbDateStruct: NgbDateStruct, destinoServidor: boolean = false){
-        let fecha: Date = this.ObtenerDateDeNgbDateStruct(ngbDateStruct);
+    static EstablecerHoraActualAFecha(fecha: Date){
         let fechaActual: Date = new Date();
         fecha.setHours(fechaActual.getHours(), fechaActual.getMinutes(), fechaActual.getSeconds());
-        if (destinoServidor){
-            fecha.setMonth(fecha.getMonth() + 1);
-        }
         return fecha;
     }
 
