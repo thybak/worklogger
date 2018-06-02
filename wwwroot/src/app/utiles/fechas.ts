@@ -3,10 +3,7 @@ import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 export class UtilesFechas {
     
     static ObtenerDateDeNgbDateStruct(ngbDateStruct: NgbDateStruct){
-        let fecha = new Date();
-        fecha.setDate(ngbDateStruct.day);
-        fecha.setMonth(ngbDateStruct.month-1);
-        fecha.setFullYear(ngbDateStruct.year);
+        let fecha = new Date(ngbDateStruct.year, ngbDateStruct.month-1, ngbDateStruct.day);
         return fecha;
     }
 

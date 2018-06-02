@@ -56,7 +56,7 @@ export class API {
      * A partir de la respuesta errónea pasada por parámetro se realiza el tratamiento del error
      * @param error 
      */
-    private manejadorErrores(error: Response): ErrorObservable {
+    manejadorErrores(error: Response): ErrorObservable {
         // Quiere decir que hemos perdido la sesión con el API, por lo que cerramos sesión.
         if (error.status === EstadosHTTP.NoAutorizado){
             this.autenticacion.cerrarSesion();

@@ -20,8 +20,8 @@ namespace WorkLogger.Controllers
             if (proyectoDB == null){
                 return NotFound();
             }
-            var registros = _contexto.Registro.Where(x=>x.ProyectoId == proyectoId && x.FechaHora >= fechaInicio && x.FechaHora <= fechaFin);
-            var estadisticaRegistros = new EstadisticaRegistros(registros.ToList(), fechaInicio, fechaFin);
+            var registros = _contexto.Registro.Where(x=>x.ProyectoId == proyectoId && x.FechaHora.Date >= fechaInicio.Date && x.FechaHora.Date <= fechaFin.Date);
+            var estadisticaRegistros = new EstadisticaRegistros(registros.ToList(), fechaInicio.Date, fechaFin.Date);
             
             return new ObjectResult(estadisticaRegistros);
         }

@@ -43,19 +43,17 @@ export class IndiceRegistroHoraComponent implements OnInit {
     });
   }
 
-  cargarProyectos(){
+  cargarProyectos() {
     this.api.getPorParametros(NOMBRE_ENTIDAD_PROYECTO, ['usuario', this.usuarioId.toString()]).subscribe(
       respuesta => {
         this.proyectosUsuario = respuesta as Proyecto[];
         // Seleccionamos el primero de la lista.
-        if (this.proyectosUsuario.length > 0){
+        if (this.proyectosUsuario.length > 0) {
           this.proyectoId = this.proyectosUsuario[0].id;
           this.cargarProyecto();
         }
       },
-      error => {
-        console.log("Error", error);
-      }
+      error => this.api.manejadorErrores(error)
     );
   }
 
@@ -81,7 +79,8 @@ export class IndiceRegistroHoraComponent implements OnInit {
       respuesta => {
         this.proyecto = respuesta as Proyecto;
         this.cargarRegistrosHora();
-      });
+      },
+      error => this.api.manejadorErrores(error));
   }
 
   cargarRegistrosHora() {
@@ -89,7 +88,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
       respuesta => {
         this.registrosHora = respuesta as RegistroHora[];
         for (let registroHora of this.registrosHora) {
-          let registroHoraF : RegistroHora = new RegistroHora();
+          let registroHoraF: RegistroHora = new RegistroHora();
           Object.assign(registroHoraF, registroHora);
           registroHoraF.fechaHora = new Date(registroHora.fechaHora);
           registroHoraF.asignarHoraAuxDeDate();
@@ -97,9 +96,8 @@ export class IndiceRegistroHoraComponent implements OnInit {
         }
         this.calcularHoras();
       },
-      error => {
-        console.log("Error", error);
-      });
+      error => this.api.manejadorErrores(error)
+    );
   }
 
   altaRapida() {
@@ -132,8 +130,8 @@ export class IndiceRegistroHoraComponent implements OnInit {
   }
 
   mostrarAlertaDeGuardado(numRegistros) {
-      this.guardado = true;
-      setTimeout(() => this.guardado = false, 5000);
+    this.guardado = true;
+    setTimeout(() => this.guardado = false, 5000);
   }
 
   guardar() {
@@ -145,8 +143,8 @@ export class IndiceRegistroHoraComponent implements OnInit {
       this.api.put(NOMBRE_ENTIDAD_REGISTRO_HORA, registroHoraF.id, registroHoraF).subscribe(respuesta => {
         numRegistros--;
         if (numRegistros == 0) {
-            this.mostrarAlertaDeGuardado(numRegistros);
-            this.calcularHoras();
+          this.mostrarAlertaDeGuardado(numRegistros);
+          this.calcularHoras();
         }
       });
     }

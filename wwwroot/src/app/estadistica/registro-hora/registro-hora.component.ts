@@ -21,19 +21,20 @@ export class RegistroHoraComponent implements OnInit {
   proyectoId: number;
   resultados: any[];
   proyectosUsuario: Proyecto[];
+  estadistica: EstadisticaRegistros;
 
   // Configuración de componente estadísticas
   view: any[] = [600, 400];
   showXAxis = true;
   showYAxis = true;
   gradient = false;
-  showLegend = true;
+  showLegend = false;
   showXAxisLabel = true;
   xAxisLabel = 'Día';
   showYAxisLabel = true;
   yAxisLabel = 'Horas';
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#606470', '#93deff']
   };
 
   get criterioEstablecido(): boolean {
@@ -64,9 +65,9 @@ export class RegistroHoraComponent implements OnInit {
       (NOMBRE_ENTIDAD_ESTADISTICA,
       ['proyecto', this.proyectoId.toString(), this.fechaInicio, this.fechaFin]).subscribe(
         respuesta => {
-          let estadistica = respuesta as EstadisticaRegistros;
+          this.estadistica = respuesta as EstadisticaRegistros;
           this.resultados = [];
-          for (let registroDia of estadistica.registrosDia){
+          for (let registroDia of this.estadistica.registrosDia){
             this.resultados.push({ "name": registroDia.dia, "value": registroDia.horas });
           }
           Object.assign(this, this.resultados);

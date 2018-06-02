@@ -35,9 +35,7 @@ export class IndiceProyectoComponent implements OnInit {
           this.proyectos.push(Object.assign(new Proyecto(), proyectoDB));
         }
       },
-      error => {
-        console.log("Error ", error);
-      }
+      error => this.api.manejadorErrores(error)
     );
   }
 
@@ -55,9 +53,7 @@ export class IndiceProyectoComponent implements OnInit {
         this.proyectos.push(Object.assign(new Proyecto(), respuesta as Proyecto));
         this.proyecto = new Proyecto();
       },
-      error => {
-        console.log("Error ", error);
-      });
+      error => this.api.manejadorErrores(error));
   }
 
 }
