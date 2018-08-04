@@ -11,6 +11,7 @@ namespace WorkLogger.Models
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Proyecto> Proyecto { get; set; }
         public DbSet<RegistroHora> Registro { get; set; }
+        public DbSet<Incidencia> Incidencia { get; set; }
 
         public ContextoWorkLogger(DbContextOptions<ContextoWorkLogger> opciones) : base(opciones) 
         {

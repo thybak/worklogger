@@ -1,3 +1,5 @@
+import { CacheApp } from "./utiles";
+
 export class Proyecto {
     id: number;
     nombre: string;
@@ -22,3 +24,5 @@ export enum ProyectoTipo {
 }
 
 export const NOMBRE_ENTIDAD_PROYECTO = 'proyecto';
+
+export const CacheProyectos = new CacheApp<Proyecto>();

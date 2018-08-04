@@ -1,0 +1,77 @@
+<ng-template #alta let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4>Alta rápida</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cerrar')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <label for="txtTitulo">Título</label>
+      <input type="text" class="form-control" [(ngModel)]="nuevaIncidencia.titulo" />
+    </div>
+    <div class="mgn-top-1em">
+      <label for="txtDescripcion">Descripcion</label>
+      <textarea class="form-control" [(ngModel)]="nuevaIncidencia.descripcion"></textarea>
+    </div>
+    <div class="mgn-top-1em">
+      <label for="dia">Fecha</label>
+      <input type="date" id="dia" class="form-control" [(ngModel)]="nuevaIncidencia.fechaIncidencia" />
+    </div>
+    <div class="mgn-top-1em">
+      <label for="ddlProyectos">Proyecto</label>
+      <app-seleccion-proyecto [soloLectura]="true"></app-seleccion-proyecto>
+    </div>
+    <button type="button" class="mgn-top-1em btn btn-primary" (click)="guardarAltaRapida(); c('Guardar');"><i class="fa fa-save"></i> Guardar</button>
+  </div>
+</ng-template>
+<div class="mgn-top-1em card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>
+          <b>Incidencias</b>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4"><app-seleccion-proyecto (proyectoSeleccionado)="proyectoSeleccionado($event)"></app-seleccion-proyecto></div>
+      <div class="col-md-8"></div>
+    </div>
+  </div>
+</div>
+<div class="card mgn-top-1em">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        <button type="button" class="btn btn-primary" (click)="open(alta)">
+          <i class="fa fa-plus"></i> Alta rápida</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table mgn-top-1em" *ngIf="incidencias !== undefined && incidencias.length > 0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let incidencia of incidencias; index as idx">
+              <td>
+                <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(incidencia.id)"><i class="fas fa-eraser"></i></button>
+              </td>
+              <td>{{ incidencia.titulo }} </td>
+              <td>{{ incidencia.descripcion }}</td>
+              <td>{{ incidencia.fechaIncidencia | date:'dd MMM yyyy' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert alert-info mgn-top-1em" *ngIf="incidencias == undefined || incidencias.length == 0">¡Este proyecto no tiene incidencias!</div>
+      </div>
+    </div>
+  </div>
+</div>

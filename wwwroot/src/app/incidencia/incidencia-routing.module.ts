@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IndiceRegistroHoraComponent } from './indice-registro-hora/indice-registro-hora.component';
+import { IndiceIncidenciaComponent } from './indice-incidencia/indice-incidencia.component';
 import { Guardian } from '../utiles/auth.guard';
 
 const appRutas : Routes = [
-  { path: 'registro-hora', component: IndiceRegistroHoraComponent, canActivate: [ Guardian ] },
+  { path: 'incidencia', component: IndiceIncidenciaComponent, canActivate: [ Guardian ] },
 ]
 
 @NgModule({
@@ -12,4 +12,4 @@ const appRutas : Routes = [
   exports: [RouterModule],
   providers: [Guardian]
 })
-export class RegistroHoraRoutingModule { }
+export class IncidenciaRoutingModule { }

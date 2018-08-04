@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { API } from '../../utiles/api.service';
 import { Autenticacion } from '../../utiles/auth.service';
 import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { NgbDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date';
-import { UtilesFechas } from '../../utiles/fechas';
 import { NOMBRE_ENTIDAD_ESTADISTICA, EstadisticaRegistros } from '../../modelos/estadistica';
 
 @Component({
@@ -15,9 +12,7 @@ import { NOMBRE_ENTIDAD_ESTADISTICA, EstadisticaRegistros } from '../../modelos/
 export class RegistroHoraComponent implements OnInit {
   readonly usuarioId = this.autenticacion.obtenerUsuarioId();
   fechaInicio: string;
-  dpFechaInicio: NgbDateStruct;
   fechaFin: string;
-  dpFechaFin: NgbDateStruct;
   proyectoId: number;
   resultados: any[];
   proyectosUsuario: Proyecto[];
@@ -43,21 +38,10 @@ export class RegistroHoraComponent implements OnInit {
 
   constructor(private api: API, private autenticacion: Autenticacion) { }
 
-  ngOnInit() {
-    this.api.getPorParametros(NOMBRE_ENTIDAD_PROYECTO, ['usuario', this.usuarioId.toString()]).subscribe(respuesta => {
-      this.proyectosUsuario = respuesta as Proyecto[];
-      if (this.proyectosUsuario.length > 0) {
-        this.proyectoId = this.proyectosUsuario[0].id;
-      }
-    });
-  }
+  ngOnInit() {}
 
-  onFechaCambiada(id: any) {
-    if (id === "dpFechaInicio") {
-      this.fechaInicio = UtilesFechas.ObtenerDateStringDeNgbDateStruct(this.dpFechaInicio);
-    } else if (id === "dpFechaFin") {
-      this.fechaFin = UtilesFechas.ObtenerDateStringDeNgbDateStruct(this.dpFechaFin);
-    }
+  proyectoSeleccionado (proyectoId: number){
+    this.proyectoId = proyectoId;
   }
 
   generarEstadisticas() {

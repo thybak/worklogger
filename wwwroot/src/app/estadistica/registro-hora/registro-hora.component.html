@@ -5,16 +5,22 @@
       <div class="col-md-5">
         <div class="row">
           <div class="col-md-6">
-            <label for="ddlProyectos">Proyecto</label>
-            <select class="custom-select" [(ngModel)]="proyectoId" id="ddlProyectos">
-              <option *ngFor="let proyecto of proyectosUsuario" [value]="proyecto.id">{{proyecto.nombre}}</option>
-            </select>
+            <label>Proyecto</label>
+            <app-seleccion-proyecto (proyectoSeleccionado)="proyectoSeleccionado($event)"></app-seleccion-proyecto>
           </div>
         </div>
         <div class="row mgn-top-1em">
           <div class="col-md-12">
-            <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp1" [(ngModel)]="dpFechaInicio" (select)="onFechaCambiada('dpFechaInicio')"></ngb-datepicker>
-            <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp2" [(ngModel)]="dpFechaFin" (select)="onFechaCambiada('dpFechaFin')"></ngb-datepicker>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="fechaInicio">Fecha de inicio</label>
+                <input type="date" id="fechaInicio" [(ngModel)]="fechaInicio" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label for="fechaFin">Fecha de fin</label>
+                <input type="date" id="fechaFin" [(ngModel)]="fechaFin" class="form-control" />
+              </div>
+            </div>
           </div>
         </div>
         <div class="row mgn-top-1em">

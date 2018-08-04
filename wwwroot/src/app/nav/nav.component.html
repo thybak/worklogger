@@ -16,6 +16,9 @@
         <a class="nav-link" routerLink="/registro-hora" routerLinkActive="active"><i class="fa fa-clock"></i> Registro de tiempos</a>
       </li>
       <li class="nav-item" *ngIf="autenticado">
+        <a class="nav-link" routerLink="/incidencia" routerLinkActive="active"><i class="fa fa-exclamation-triangle"></i> Incidencias</a>
+      </li>
+      <li class="nav-item" *ngIf="autenticado">
         <a class="nav-link" routerLink="/estadistica" routerLinkActive="active"><i class="fa fa-chart-bar"></i> Estadísticas</a>
       </li>
       <li class="nav-item" *ngIf="!autenticado">

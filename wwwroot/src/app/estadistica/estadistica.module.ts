@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { EstadisticaRoutingModule } from './estadistica-routing.module';
 import { FormsModule } from '@angular/forms';
+import { ProyectoModule } from '../proyecto/proyecto.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     NgxChartsModule,
     BrowserAnimationsModule,
-    EstadisticaRoutingModule
+    EstadisticaRoutingModule,
+    ProyectoModule
   ],
   declarations: [RegistroHoraComponent]
 })

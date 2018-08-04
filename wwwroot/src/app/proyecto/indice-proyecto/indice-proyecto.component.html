@@ -41,7 +41,7 @@
       <tbody>
         <tr *ngFor="let proyecto of proyectos">
           <td>
-            <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(proyecto.id)">X</button>
+            <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(proyecto.id)"><i class="fas fa-eraser"></i></button>
           </td>
           <td>
             {{ proyecto.nombre }}

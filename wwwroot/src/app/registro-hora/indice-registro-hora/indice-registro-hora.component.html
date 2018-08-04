@@ -6,33 +6,26 @@
   </div>
   <div class="col-md-12"></div>
 </div>
-<ng-template #filtro let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4>Establecer filtro</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cerrar')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <ngb-datepicker #dp placeholder="dd-MM-yyyy" name="dp" [(ngModel)]="dia" (select)="onFechaCambiada()"></ngb-datepicker>
-    <div class="mgn-top-1em">
-      <label for="ddlProyectos">Proyecto</label>
-      <select class="custom-select" (change)="cargarProyecto()" [(ngModel)]="proyectoId" id="ddlProyectos">
-        <option *ngFor="let proyecto of proyectosUsuario" [value]="proyecto.id">{{proyecto.nombre}}</option>
-      </select>
-    </div>
-  </div>
-</ng-template>
-<div class="mgn-top-1em card" *ngIf="proyecto !== undefined">
+
+<div class="mgn-top-1em card">
   <div class="card-body">
     <div class="row">
-      <div class="col-md-12">
-        <h2>
-          <b>{{proyecto.nombre}}</b> - {{fechaHoy | date:'dd MMM yyyy'}}
-        </h2>
-        <h4>
-          <b>{{ horas | number:'1.0-2' }}</b> horas trabajadas
-        </h4>
+      <div class="col-md-4">
+        <label>Proyecto</label>
+        <app-seleccion-proyecto (proyectoSeleccionado)="proyectoSeleccionado($event)"></app-seleccion-proyecto>
+      </div>
+    </div>
+    <div class="row mgn-top-1em">
+      <div class="col-md-4">
+        <label for="dia">Fecha</label>
+        <input type="date" id="dia" class="form-control" [(ngModel)]="dia" (change)="onFechaCambiada()" />
+      </div>
+    </div>
+    <div class="row mgn-top-1em">
+      <div class="col-md-4 card">
+        <div class="card-body">
+          <i class="fas fa-info-circle"></i> <b>{{ horas | number:'1.0-2' }}</b> horas trabajadas
+        </div>
       </div>
     </div>
   </div>
@@ -43,8 +36,6 @@
       <div class="col-md-4">
         <button type="button" class="btn btn-primary" (click)="altaRapida()">
           <i class="fa fa-plus"></i> Alta rápida</button>
-        <button type="button" class="btn btn-default" (click)="open(filtro)">
-          <i class="fa fa-filter"></i> Establecer filtro</button>
         <button type="button" class="btn btn-default" *ngIf="registrosHora.length > 0" (click)="guardar()">
           <i class="fa fa-save"></i> Guardar</button>
       </div>
@@ -62,7 +53,9 @@
           <tbody>
             <tr *ngFor="let registroHora of registrosHora; index as idx">
               <td>
-                <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">X</button>
+                <button type="button" class="btn btn-xs btn-danger" (click)="eliminarRegistro(registroHora.id)">
+                  <i class="fas fa-eraser"></i>
+                </button>
               </td>
               <td>{{ idx % 2 == 0 ? 'Entrada' : 'Salida' }}</td>
               <td>
@@ -75,6 +68,6 @@
     </div>
   </div>
 </div>
-<div class="alert alert-info" *ngIf="proyecto === undefined">
+<div class="alert alert-info" *ngIf="primeraCarga && proyecto === undefined">
   <i class="fa fa-circle-info"></i> Aún no has creado ningún proyecto, ¿sobre qué vas a registrar los tiempos?
 </div>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { API } from '../../utiles/api.service';
-import { Proyecto, ProyectoTipo, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
+import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
 import { Autenticacion } from '../../utiles/auth.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-indice-proyecto',

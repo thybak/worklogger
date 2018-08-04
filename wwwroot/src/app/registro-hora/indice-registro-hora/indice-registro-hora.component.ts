@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe, DecimalPipe } from '@angular/common';
-import { NgbTimepicker, NgbAlert, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RegistroHora, NOMBRE_ENTIDAD_REGISTRO_HORA, HoraAux } from '../../modelos/registro-hora';
+import { RegistroHora, NOMBRE_ENTIDAD_REGISTRO_HORA } from '../../modelos/registro-hora';
 import { API } from '../../utiles/api.service';
 import { Proyecto, NOMBRE_ENTIDAD_PROYECTO } from '../../modelos/proyecto';
 import { Autenticacion } from '../../utiles/auth.service';
-import { NgbDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date';
 import { UtilesFechas } from '../../utiles/fechas';
 
 @Component({
@@ -15,7 +12,7 @@ import { UtilesFechas } from '../../utiles/fechas';
 })
 export class IndiceRegistroHoraComponent implements OnInit {
   readonly usuarioId = this.autenticacion.obtenerUsuarioId();
-  dia: NgbDateStruct;
+  dia: string;
   proyectoId: number;
   proyecto: Proyecto;
   registrosHora: RegistroHora[];
@@ -23,38 +20,22 @@ export class IndiceRegistroHoraComponent implements OnInit {
   guardado: boolean;
   horas: number;
   fechaHoy: any;
+  primeraCarga: boolean;
 
-  constructor(private api: API, private autenticacion: Autenticacion, private modalService: NgbModal) {
+  constructor(private api: API, private autenticacion: Autenticacion) {
     this.registrosHora = [];
     this.proyectosUsuario = [];
   }
 
   ngOnInit() {
     this.fechaHoy = new Date();
-    this.dia = UtilesFechas.ObtenerNgbDateStructDeDate(this.fechaHoy);
-    this.cargarProyectos();
+    this.dia = this.fechaHoy.toISOString();
+    this.dia = this.dia.split('T')[0];
   }
 
-  open(content) {
-    this.modalService.open(content).result.then((result) => {
-
-    }, (reason) => {
-
-    });
-  }
-
-  cargarProyectos() {
-    this.api.getPorParametros(NOMBRE_ENTIDAD_PROYECTO, ['usuario', this.usuarioId.toString()]).subscribe(
-      respuesta => {
-        this.proyectosUsuario = respuesta as Proyecto[];
-        // Seleccionamos el primero de la lista.
-        if (this.proyectosUsuario.length > 0) {
-          this.proyectoId = this.proyectosUsuario[0].id;
-          this.cargarProyecto();
-        }
-      },
-      error => this.api.manejadorErrores(error)
-    );
+  proyectoSeleccionado(proyectoId: number){
+    this.proyectoId = proyectoId;
+    this.cargarProyecto();
   }
 
   calcularHoras() {
@@ -79,6 +60,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
       respuesta => {
         this.proyecto = respuesta as Proyecto;
         this.cargarRegistrosHora();
+        this.primeraCarga = true;
       },
       error => this.api.manejadorErrores(error));
   }
@@ -124,12 +106,12 @@ export class IndiceRegistroHoraComponent implements OnInit {
 
   onFechaCambiada() {
     if (this.proyectoId !== undefined) {
-      this.fechaHoy = UtilesFechas.ObtenerDateDeNgbDateStruct(this.dia);
+      this.fechaHoy = new Date(this.dia);
       this.cargarRegistrosHora();
     }
   }
 
-  mostrarAlertaDeGuardado(numRegistros) {
+  mostrarAlertaDeGuardado() {
     this.guardado = true;
     setTimeout(() => this.guardado = false, 5000);
   }
@@ -143,7 +125,7 @@ export class IndiceRegistroHoraComponent implements OnInit {
       this.api.put(NOMBRE_ENTIDAD_REGISTRO_HORA, registroHoraF.id, registroHoraF).subscribe(respuesta => {
         numRegistros--;
         if (numRegistros == 0) {
-          this.mostrarAlertaDeGuardado(numRegistros);
+          this.mostrarAlertaDeGuardado();
           this.calcularHoras();
         }
       });
