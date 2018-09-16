@@ -19,6 +19,10 @@
       <input type="date" id="dia" class="form-control" [(ngModel)]="nuevaIncidencia.fechaIncidencia" />
     </div>
     <div class="mgn-top-1em">
+      <label for="diaFin">Fecha fin</label>
+      <input type="date" id="diaFin" class="form-control" [(ngModel)]="nuevaIncidencia.fechaFinIncidencia" />
+    </div>
+    <div class="mgn-top-1em">
       <label for="ddlProyectos">Proyecto</label>
       <app-seleccion-proyecto [soloLectura]="true"></app-seleccion-proyecto>
     </div>
@@ -57,6 +61,7 @@
               <th>Título</th>
               <th>Descripción</th>
               <th>Fecha</th>
+              <th>Fecha fin</th>
             </tr>
           </thead>
           <tbody>
@@ -67,6 +72,7 @@
               <td>{{ incidencia.titulo }} </td>
               <td>{{ incidencia.descripcion }}</td>
               <td>{{ incidencia.fechaIncidencia | date:'dd MMM yyyy' }}</td>
+              <td>{{ incidencia.fechaFinIncidencia | date: 'dd MMM yyyy' }}</td>
             </tr>
           </tbody>
         </table>

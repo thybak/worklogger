@@ -14,6 +14,7 @@ namespace WorkLogger.Models
         public string Titulo { get; set; }
         public string Descripcion { get; set; }
         public DateTime FechaIncidencia { get; set; }
+        public DateTime FechaFinIncidencia { get; set; }
         [ForeignKey("Proyecto")]
         public long ProyectoId { get; set; }
 
@@ -23,6 +24,7 @@ namespace WorkLogger.Models
             this.Titulo = incidencia.Titulo;
             this.Descripcion = incidencia.Descripcion;
             this.FechaIncidencia = incidencia.FechaIncidencia;
+            this.FechaFinIncidencia = incidencia.FechaFinIncidencia;
             this.ProyectoId = incidencia.ProyectoId;
         }
     }

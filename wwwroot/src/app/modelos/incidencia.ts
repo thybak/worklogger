@@ -3,6 +3,7 @@ export class Incidencia {
     titulo: string;
     descripcion: string;
     fechaIncidencia: Date;
+    fechaFinIncidencia: Date;
     proyectoId: number;
 }
 
